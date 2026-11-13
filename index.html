@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>پنل مدیریت سرور آمریکا</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 20px; max-width: 500px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .status { color: #4ade80; font-weight: bold; }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #2563eb; }
+        pre { background: #0f172a; padding: 10px; border-radius: 6px; direction: ltr; text-align: left; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🇺🇸 وضعیت سرور آمریکا (US-East)</h2>
+        <p>وضعیت اتصال: <span class="status">آنلاین (Online)</span></p>
+        <p>مخزن گیت‌هاب متصل: <code id="repo-name">در حال بررسی...</code></p>
+        <button onclick="fetchRepo()">دریافت آخرین وضعیت از GitHub</button>
+        <pre id="output">خروجی API اینجا نمایش داده می‌شود...</pre>
+    </div>
+
+    <script>
+        async function fetchRepo() {
+            const repo = "mhsanaei/3x-ui"; // نام مخزن گیت‌هاب دلخواه
+            document.getElementById('repo-name').innerText = repo;
+            try {
+                const res = await fetch(`https://api.github.com/repos/${repo}`);
+                const data = await res.json();
+                document.getElementById('output').innerText = JSON.stringify({
+                    name: data.name,
+                    stars: data.stargazers_count,
+                    last_update: data.updated_at
+                }, null, 2);
+            } catch (err) {
+                document.getElementById('output').innerText = "خطا در ارتباط با گیت‌هاب";
+            }
+        }
+    </script>
+</body>
+</html>
